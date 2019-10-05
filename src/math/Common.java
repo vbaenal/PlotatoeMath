@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Constants {
+/*
+ * @author Wicmage
+ */
 
-	public final static String TOKENS="+-*/";
+public class Common {
+
+	public final static String TOKENS="+\\-*/";
 	
 	public static List<List<Integer>> locateParenthesis(String arg) {
 		String f=new String(arg);
@@ -39,14 +43,11 @@ public class Constants {
 	}
 	
 	public static boolean containsToken(String arg) {
-		boolean res=false;
 		for(int i=0;i<TOKENS.length();i++) {
-			if(arg.contains(Character.toString(TOKENS.charAt(i)))) {
-				res=true;
-				break;
-			}
+			if(arg.contains(Character.toString(TOKENS.charAt(i))))
+				return true;
 		}
-		return res;
+		return false;
 	}
 	
 }

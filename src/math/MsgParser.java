@@ -10,8 +10,7 @@ import java.util.Map;
 public class MsgParser {
 	
 	public Map<String, double[]> varData;
-	public String functionName;
-	public String equation;
+	public String function;
 	
 	public MsgParser(String msg) throws Exception {
 		// Message to lower case. That should prevent some conflicts.
@@ -22,23 +21,11 @@ public class MsgParser {
 		if(msgData.length!=2) throw new Exception();
 			
 		//Position 0 has the function
-		String function = msgData[0];
+		function = msgData[0]+"*1";
 		//Position 1 has the intervals + delta (distance between points)
 		String[] intervals = msgData[1].split("\\&");
-			
-		//We want to get the equation as well as variables
-		String[] fData = function.split("=");
-		this.functionName = fData[0].split("\\(")[0];
-		String[] fVarsArray = fData[0].split("\\(")[1].replace(")", "").split(",");
-		this.equation = fData[1];
 		
 		String[] iVarsArray = new String[intervals.length];
-		
-		for(int i=0;i<fVarsArray.length-1;i++) {
-			for(int j=i+1;j<fVarsArray.length;j++) {
-				if(fVarsArray[i]==fVarsArray[j]) throw new Exception();
-			}
-		}
 		
 		varData = new HashMap<String, double[]>();
 		for(int i=0;i<intervals.length;i++) {
@@ -52,18 +39,11 @@ public class MsgParser {
 			//Parse string to double
 			for(int j=0;j<3;j++)
 				doubleAux[j] = Double.parseDouble(aux[j]);
-			//b-a>delta
-			if(doubleAux[1]-doubleAux[0]<=doubleAux[2]) throw new Exception();
+			//b-a>=delta
+			if(doubleAux[1]-doubleAux[0]<doubleAux[2]) throw new Exception();
 			//delta>0
 			if(doubleAux[2]<=0d) throw new Exception();
 			varData.put(iVarsArray[i],doubleAux);
-			
-			//variables declared in function must be the same as variables declared on intervals
-			if(!iVarsArray[i].equals(fVarsArray[i])) throw new Exception();
-		}
-		for(int i=0;i<fVarsArray.length;i++) {
-			//same as above
-			if(!fVarsArray[i].equals(iVarsArray[i])) throw new Exception();
 		}
 	}
 }

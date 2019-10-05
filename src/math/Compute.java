@@ -10,24 +10,24 @@ import java.util.Map;
  */
 
 public class Compute {
-	
-	/*
-	 * Buggy as hell
-	 */
 
 	public Map<Double[], Double> results = new HashMap<Double[],Double>();
+	private Map<String, double[]> varCopy = new HashMap<String, double[]>();
 	public String[] fData = new String[3];
+	private FunctionParser fp;
 	
-	public Compute(String function, Map<String, double[]> varData) throws Exception {
-		Map<String, double[]> varCopy = new HashMap<String, double[]>();
-		varCopy.putAll(varData);
+	public Compute(FunctionParser fp, Map<String, double[]> varData) {
+		this.fp = fp;
+		this.varCopy.putAll(varData);
+	}
+	
+	public void compute() throws Exception {
+		String function = fp.toString();
 		String[] vars = varCopy.keySet().toArray(new String[1]);
 		int nVars=vars.length;
-
-		//TODO Can't compute single variables
 		
 		String interior = function.substring(2,function.length()-1);
-		List<List<Integer>> par = Constants.locateParenthesis(interior);
+		List<List<Integer>> par = Common.locateParenthesis(interior);
 		List<String> parenthesis=new ArrayList<String>();
 		for(List<Integer> li : par) {
 			if(li.get(0)!=li.get(1)) {
@@ -38,11 +38,11 @@ public class Compute {
 		}
 		String[] parts = interior.split("\\,",2);
 		for(int j=0;j<parenthesis.size();j++) {
-			if(Constants.containsToken(parts[0]))
+			if(Common.containsToken(parts[0]))
 				parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
 			else
 				parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-			if(Constants.containsToken(parts[1]))
+			if(Common.containsToken(parts[1]))
 				parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
 			else
 				parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
@@ -54,18 +54,7 @@ public class Compute {
 		
 		if(nVars==1)
 			var1(varCopy,vars);
-		else if(nVars==2)
-			var2(varCopy,vars);
 		else throw new Exception();
-	}
-	
-	//TODO 2 variables compute is not complete
-	public void var2(Map<String, double[]> varCopy, String[] vars) {
-		while(varCopy.get(vars[0])[0] <= varCopy.get(vars[0])[1]) {
-			while(varCopy.get(vars[1])[0] <= varCopy.get(vars[1])[1]) {
-				
-			}
-		}
 	}
 	
 	public void var1(Map<String, double[]> varCopy, String[] vars) {
@@ -79,7 +68,6 @@ public class Compute {
 		}
 	}
 	
-	//TODO this shows the thing but is not sorted
 	public String toString() {
 		String res="";
 		for(Double[] da : results.keySet()) {
@@ -94,212 +82,47 @@ public class Compute {
 		return res;
 	}
 	
-	//TODO this works but is not efficient
-	public static Double operation(char opType, String arg1, String arg2) {
-		double res;
-		
-		if(opType=='+') {
-			if(arg1.contains("(")) {
-				String interior = arg1.substring(2,arg1.length()-1);
-				List<List<Integer>> par = Constants.locateParenthesis(interior);
-				List<String> parenthesis=new ArrayList<String>();
-				for(List<Integer> li : par) {
-					if(li.get(0)!=li.get(1)) {
-						String p=interior.substring(li.get(0)+1, li.get(1));
-						parenthesis.add(p);
-						interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
-					}
+	public static Double prepareArg(String arg) {
+		if(arg.contains("(")) {
+			String interior = arg.substring(2,arg.length()-1);
+			List<List<Integer>> par = Common.locateParenthesis(interior);
+			List<String> parenthesis=new ArrayList<String>();
+			for(List<Integer> li : par) {
+				if(li.get(0)!=li.get(1)) {
+					String p=interior.substring(li.get(0)+1, li.get(1));
+					parenthesis.add(p);
+					interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
 				}
-				String[] parts = interior.split("\\,",2);
-				for(int j=0;j<parenthesis.size();j++) {
-					if(Constants.containsToken(parts[0]))
-						parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-					if(Constants.containsToken(parts[1]))
-						parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
-				}
-				arg1=operation(arg1.charAt(0),parts[0],parts[1]).toString();
 			}
-			if(arg2.contains("(")) {
-				String interior = arg2.substring(2,arg2.length()-1);
-				List<List<Integer>> par = Constants.locateParenthesis(interior);
-				List<String> parenthesis=new ArrayList<String>();
-				for(List<Integer> li : par) {
-					if(li.get(0)!=li.get(1)) {
-						String p=interior.substring(li.get(0)+1, li.get(1));
-						parenthesis.add(p);
-						interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
-					}
-				}
-				String[] parts = interior.split("\\,",2);
-				for(int j=0;j<parenthesis.size();j++) {
-					if(Constants.containsToken(parts[0]))
-						parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-					if(Constants.containsToken(parts[1]))
-						parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
-				}
-				arg2=operation(arg2.charAt(0),parts[0],parts[1]).toString();
+			String[] parts = interior.split("\\,",2);
+			for(int j=0;j<parenthesis.size();j++) {
+				if(Common.containsToken(parts[0]))
+					parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
+				else
+					parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
+				if(Common.containsToken(parts[1]))
+					parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
+				else
+					parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
 			}
-			res=Double.parseDouble(arg1)+Double.parseDouble(arg2);
-		} else if(opType=='-') {
-			if(arg1.contains("(")) {
-				String interior = arg1.substring(2,arg1.length()-1);
-				List<List<Integer>> par = Constants.locateParenthesis(interior);
-				List<String> parenthesis=new ArrayList<String>();
-				for(List<Integer> li : par) {
-					if(li.get(0)!=li.get(1)) {
-						String p=interior.substring(li.get(0)+1, li.get(1));
-						parenthesis.add(p);
-						interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
-					}
-				}
-				String[] parts = interior.split("\\,",2);
-				for(int j=0;j<parenthesis.size();j++) {
-					if(Constants.containsToken(parts[0]))
-						parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-					if(Constants.containsToken(parts[1]))
-						parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
-				}
-				arg1=operation(arg1.charAt(0),parts[0],parts[1]).toString();
-			}
-			if(arg2.contains("(")) {
-				String interior = arg2.substring(2,arg2.length()-1);
-				List<List<Integer>> par = Constants.locateParenthesis(interior);
-				List<String> parenthesis=new ArrayList<String>();
-				for(List<Integer> li : par) {
-					if(li.get(0)!=li.get(1)) {
-						String p=interior.substring(li.get(0)+1, li.get(1));
-						parenthesis.add(p);
-						interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
-					}
-				}
-				String[] parts = interior.split("\\,",2);
-				for(int j=0;j<parenthesis.size();j++) {
-					if(Constants.containsToken(parts[0]))
-						parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-					if(Constants.containsToken(parts[1]))
-						parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
-				}
-				arg2=operation(arg2.charAt(0),parts[0],parts[1]).toString();
-			}
-			res=Double.parseDouble(arg1)-Double.parseDouble(arg2);
-		} else if(opType=='*') {
-			if(arg1.contains("(")) {
-				String interior = arg1.substring(2,arg1.length()-1);
-				List<List<Integer>> par = Constants.locateParenthesis(interior);
-				List<String> parenthesis=new ArrayList<String>();
-				for(List<Integer> li : par) {
-					if(li.get(0)!=li.get(1)) {
-						String p=interior.substring(li.get(0)+1, li.get(1));
-						parenthesis.add(p);
-						interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
-					}
-				}
-				String[] parts = interior.split("\\,",2);
-				for(int j=0;j<parenthesis.size();j++) {
-					if(Constants.containsToken(parts[0]))
-						parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-					if(Constants.containsToken(parts[1]))
-						parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
-				}
-				arg1=operation(arg1.charAt(0),parts[0],parts[1]).toString();
-			}
-			if(arg2.contains("(")) {
-				String interior = arg2.substring(2,arg2.length()-1);
-				List<List<Integer>> par = Constants.locateParenthesis(interior);
-				List<String> parenthesis=new ArrayList<String>();
-				for(List<Integer> li : par) {
-					if(li.get(0)!=li.get(1)) {
-						String p=interior.substring(li.get(0)+1, li.get(1));
-						parenthesis.add(p);
-						interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
-					}
-				}
-				String[] parts = interior.split("\\,",2);
-				for(int j=0;j<parenthesis.size();j++) {
-					if(Constants.containsToken(parts[0]))
-						parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-					if(Constants.containsToken(parts[1]))
-						parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
-				}
-				arg2=operation(arg2.charAt(0),parts[0],parts[1]).toString();
-			}
-			res=Double.parseDouble(arg1)*Double.parseDouble(arg2);
-		} else {
-			if(arg1.contains("(")) {
-				String interior = arg1.substring(2,arg1.length()-1);
-				List<List<Integer>> par = Constants.locateParenthesis(interior);
-				List<String> parenthesis=new ArrayList<String>();
-				for(List<Integer> li : par) {
-					if(li.get(0)!=li.get(1)) {
-						String p=interior.substring(li.get(0)+1, li.get(1));
-						parenthesis.add(p);
-						interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
-					}
-				}
-				String[] parts = interior.split("\\,",2);
-				for(int j=0;j<parenthesis.size();j++) {
-					if(Constants.containsToken(parts[0]))
-						parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-					if(Constants.containsToken(parts[1]))
-						parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
-				}
-				arg1=operation(arg1.charAt(0),parts[0],parts[1]).toString();
-			}
-			if(arg2.contains("(")) {
-				String interior = arg2.substring(2,arg2.length()-1);
-				List<List<Integer>> par = Constants.locateParenthesis(interior);
-				List<String> parenthesis=new ArrayList<String>();
-				for(List<Integer> li : par) {
-					if(li.get(0)!=li.get(1)) {
-						String p=interior.substring(li.get(0)+1, li.get(1));
-						parenthesis.add(p);
-						interior=interior.replace("("+p+")", "PARENTHESIS"+par.indexOf(li));
-					}
-				}
-				String[] parts = interior.split("\\,",2);
-				for(int j=0;j<parenthesis.size();j++) {
-					if(Constants.containsToken(parts[0]))
-						parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-					if(Constants.containsToken(parts[1]))
-						parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
-					else
-						parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
-				}
-				arg2=operation(arg2.charAt(0),parts[0],parts[1]).toString();
-			}
-			res=Double.parseDouble(arg1)/Double.parseDouble(arg2);
+			arg=operation(arg.charAt(0),parts[0],parts[1]).toString();
 		}
-		
-		return res;
+		return Double.parseDouble(arg);
+	}
+	
+	public static Double operation(char opType, String arg1, String arg2) {
+		Double dArg1 = prepareArg(arg1);
+		Double dArg2 = prepareArg(arg2);
+		switch(opType) {
+		case '+':
+			return dArg1+dArg2;
+		case '-':
+			return dArg1-dArg2;
+		case '*':
+			return dArg1*dArg2;
+		case '/':
+			return dArg1/dArg2;
+		}
+		return null;
 	}
 }
