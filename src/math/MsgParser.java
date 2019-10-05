@@ -9,6 +9,8 @@ import java.util.Map;
 
 public class MsgParser {
 	
+	public double start, end, delta;
+	
 	public Map<String, double[]> varData;
 	public String function;
 	
@@ -44,6 +46,9 @@ public class MsgParser {
 			//delta>0
 			if(doubleAux[2]<=0d) throw new Exception();
 			varData.put(iVarsArray[i],doubleAux);
+			start = doubleAux[0];
+			end = doubleAux[1];
+			delta = doubleAux[2];
 		}
 	}
 }

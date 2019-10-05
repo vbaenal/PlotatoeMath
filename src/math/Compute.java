@@ -1,5 +1,6 @@
 package math;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +12,11 @@ import java.util.Map;
 
 public class Compute {
 
-	public Map<Double[], Double> results = new HashMap<Double[],Double>();
-	private Map<String, double[]> varCopy = new HashMap<String, double[]>();
+	public Map<Double, Double> results = new HashMap<Double,Double>();
 	public String[] fData = new String[3];
+	
 	private FunctionParser fp;
+	private Map<String, double[]> varCopy = new HashMap<String, double[]>();
 	
 	public Compute(FunctionParser fp, Map<String, double[]> varData) {
 		this.fp = fp;
@@ -59,10 +61,10 @@ public class Compute {
 	
 	public void var1(Map<String, double[]> varCopy, String[] vars) {
 		while(varCopy.get(vars[0])[0]<=varCopy.get(vars[0])[1]) {
-			Double[] var = new Double[1];
-			var[0]=varCopy.get(vars[0])[0];
-			String d1=fData[1].replace(vars[0], Double.toString(var[0]));
-			String d2=fData[2].replace(vars[0], Double.toString(var[0]));
+			Double var;
+			var=varCopy.get(vars[0])[0];
+			String d1=fData[1].replace(vars[0], Double.toString(var));
+			String d2=fData[2].replace(vars[0], Double.toString(var));
 			results.put(var, operation(fData[0].charAt(0),d1,d2));
 			varCopy.get(vars[0])[0]+=varCopy.get(vars[0])[2];
 		}
@@ -70,14 +72,10 @@ public class Compute {
 	
 	public String toString() {
 		String res="";
-		for(Double[] da : results.keySet()) {
+		for(Double da : results.keySet()) {
 			res+="[";
-			for(int i=0;i<da.length;i++) {
-				res+=da[i];
-				if(i==0 && da.length==2)
-					res+=",";
-			}
-			res+="] = " + results.get(da) + "\n";
+			res+=new DecimalFormat("#.##").format(da);
+			res+="] = " + new DecimalFormat("#.##").format(results.get(da)) + "\n";
 		}
 		return res;
 	}
@@ -121,7 +119,10 @@ public class Compute {
 		case '*':
 			return dArg1*dArg2;
 		case '/':
-			return dArg1/dArg2;
+			if(dArg2!=0) 
+				return dArg1/dArg2;
+			else
+				return Double.MAX_VALUE;
 		}
 		return null;
 	}
