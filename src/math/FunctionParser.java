@@ -13,8 +13,6 @@ public class FunctionParser {
 	
 	// Obtains the function and decomposes it to a tree form
 	public FunctionParser(String f) {
-		char[] tokens = Common.TOKENS.toCharArray();
-		
 		// Locate parenthesis
 		List<List<Integer>> parData = Common.locateParenthesis(f);
 		this.function=f;
@@ -30,14 +28,14 @@ public class FunctionParser {
 		
 		boolean hasToken=false;
 		int i=0;
-		for(;i<tokens.length;i++)
-			if(function.contains(Character.toString(tokens[i]))) {
+		for(;i<Common.TOKENS.length;i++)
+			if(function.contains(Common.TOKENS[i])) {
 				hasToken=true;
 				break;
 			}
 		
 		if(hasToken) {
-			String[] parts = function.split("\\"+Character.toString(tokens[i]),2);
+			String[] parts = function.split("\\"+Common.TOKENS[i],2);
 			for(int j=0;j<parenthesis.size();j++) {
 				if(Common.containsToken(parts[0]))
 					parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
@@ -48,9 +46,8 @@ public class FunctionParser {
 				else
 					parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
 			}
-			this.function = Character.toString(tokens[i]) + "(";
+			this.function = Common.TOKENS[i] + "(";
 			this.function+=new FunctionParser(parts[0]).toString() + "," + new FunctionParser(parts[1]).toString()+")";
-	
 		}
 	}
 	

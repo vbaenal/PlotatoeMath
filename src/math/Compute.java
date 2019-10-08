@@ -16,17 +16,17 @@ public class Compute {
 	public String[] fData = new String[3];
 	
 	private FunctionParser fp;
-	private Map<String, double[]> varCopy = new HashMap<String, double[]>();
+	private double[] varData = new double[3];
 	
-	public Compute(FunctionParser fp, Map<String, double[]> varData) {
+	public Compute(FunctionParser fp, MsgParser mp) {
 		this.fp = fp;
-		this.varCopy.putAll(varData);
+		this.varData[0]=mp.start;
+		this.varData[1]=mp.end;
+		this.varData[2]=mp.step;
 	}
 	
 	public void compute() throws Exception {
 		String function = fp.toString();
-		String[] vars = varCopy.keySet().toArray(new String[1]);
-		int nVars=vars.length;
 		
 		String interior = function.substring(2,function.length()-1);
 		List<List<Integer>> par = Common.locateParenthesis(interior);
@@ -54,19 +54,16 @@ public class Compute {
 		fData[1]=parts[0];
 		fData[2]=parts[1];
 		
-		if(nVars==1)
-			var1(varCopy,vars);
-		else throw new Exception();
+		var1(varData);
 	}
 	
-	public void var1(Map<String, double[]> varCopy, String[] vars) {
-		while(varCopy.get(vars[0])[0]<=varCopy.get(vars[0])[1]) {
-			Double var;
-			var=varCopy.get(vars[0])[0];
-			String d1=fData[1].replace(vars[0], Double.toString(var));
-			String d2=fData[2].replace(vars[0], Double.toString(var));
-			results.put(var, operation(fData[0].charAt(0),d1,d2));
-			varCopy.get(vars[0])[0]+=varCopy.get(vars[0])[2];
+	public void var1(double[] varData) {
+		while(varData[0]<=varData[1]) {
+			double aux=varData[0];
+			String d1=fData[1].replace("x", Double.toString(aux));
+			String d2=fData[2].replace("x", Double.toString(aux));
+			results.put(aux, operation(Character.toString(fData[0].charAt(0)),d1,d2));
+			varData[0]+=varData[2];
 		}
 	}
 	
@@ -103,26 +100,28 @@ public class Compute {
 				else
 					parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
 			}
-			arg=operation(arg.charAt(0),parts[0],parts[1]).toString();
+			arg=operation(Character.toString(arg.charAt(0)),parts[0],parts[1]).toString();
 		}
 		return Double.parseDouble(arg);
 	}
 	
-	public static Double operation(char opType, String arg1, String arg2) {
+	public static Double operation(String opType, String arg1, String arg2) {
 		Double dArg1 = prepareArg(arg1);
 		Double dArg2 = prepareArg(arg2);
 		switch(opType) {
-		case '+':
+		case "+":
 			return dArg1+dArg2;
-		case '-':
+		case "-":
 			return dArg1-dArg2;
-		case '*':
+		case "*":
 			return dArg1*dArg2;
-		case '/':
+		case "/":
 			if(dArg2!=0) 
 				return dArg1/dArg2;
 			else
 				return Double.MAX_VALUE;
+		case "^":
+			return Math.pow(dArg1, dArg2);
 		}
 		return null;
 	}

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Common {
 
-	public final static String TOKENS="+\\-*/";
+	public final static String[] TOKENS= {"+","-","*","/","^"};
 	
 	public static List<List<Integer>> locateParenthesis(String arg) {
 		String f=new String(arg);
@@ -43,11 +43,24 @@ public class Common {
 	}
 	
 	public static boolean containsToken(String arg) {
-		for(int i=0;i<TOKENS.length();i++) {
-			if(arg.contains(Character.toString(TOKENS.charAt(i))))
+		for(int i=0;i<TOKENS.length;i++) {
+			if(arg.contains(TOKENS[i]))
 				return true;
 		}
 		return false;
 	}
 	
+	public static String[] toArray(List<String> list) {
+		String[] array = new String[list.size()];
+		for(int i=0;i<list.size();i++)
+			array[i] = list.get(i);
+		return array;
+	}
+	
+	public static <T> boolean arrayContains(T[] array, T elem) {
+		for(int i=0;i<array.length;i++)
+			if(elem.equals(array[i]))
+				return true;
+		return false;
+	}
 }

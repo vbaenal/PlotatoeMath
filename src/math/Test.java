@@ -13,34 +13,32 @@ public class Test {
 
 	public static void main(String[] args) {
 		//TODO If you do (a+b)*(a-b) (or any other operations with a and b in this order) the program doesn't work
-		String msg="1/x;x<-[0.05,1,0.05]";
-		System.out.println(msg);
+		String[] msg= {"x^4-3*x^3+2*x^2+x", "-1", "2.5", "0.25"};
 		try {
+			System.out.println(Common.containsToken("2+2"));
 			String sentMessage;
 			MsgParser mp = new MsgParser(msg);
 			System.out.println("MsgParser Done");
 			FunctionParser fp = new FunctionParser(mp.function);
 			System.out.println("FunctionParser Done");
-			Compute c = new Compute(fp,mp.varData);
+			System.out.println(fp.toString());
+			Compute c = new Compute(fp,mp);
 			c.compute();
-			sentMessage="Function: f"  + mp.varData.keySet() + " = " + fp.toString() + "\n";
-			for(String var : mp.varData.keySet()) {
-				sentMessage+="\nVariable: " + var + ", First Point: " + 
-					mp.start + ", End Point: " +
-					mp.varData.get(var)[1] + ", Delta: " + mp.varData.get(var)[2];
-				
-				sentMessage+="\n"+c.toString();
-			}
+			sentMessage="Function: f(x) = " + fp.toString() +
+						"\n\tFirst Point: " + mp.start + 
+						"\n\tEnd Point: " + mp.end + 
+						"\n\tStep: " + mp.step;
 			System.out.println(sentMessage);
 			
-			BufferedImage result = new BufferedImage(500,500,BufferedImage.TYPE_INT_RGB);
-			Drawer.plot(mp, c, result);
-			File f = new File("test.png");
-			ImageIO.write(result,"png",f);
-			
+			if(!Common.arrayContains(mp.options, "noplot")) {
+				BufferedImage result = new BufferedImage(500,500,BufferedImage.TYPE_INT_RGB);
+				Drawer.plot(mp, c, result);
+				File f = new File("test.png");
+				ImageIO.write(result,"png",f);
+			} else
+				System.out.println(c.toString());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
+	}	
 }
