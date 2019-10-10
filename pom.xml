@@ -1,0 +1,5 @@
+ <dependency>
+        <groupId>org.telegram</groupId>
+        <artifactId>telegrambots-abilities</artifactId>
+        <version>4.4.0</version>
+</dependency>
