@@ -24,19 +24,20 @@ public class Test {
 			System.out.println(fp.toString());
 			Compute c = new Compute(fp,mp);
 			c.compute();
-			sentMessage="Function: f(x) = " + fp.toString() +
-						"\n\tFirst Point: " + mp.start + 
-						"\n\tEnd Point: " + mp.end + 
-						"\n\tStep: " + mp.step;
-			System.out.println(sentMessage);
 			
 			if(!Common.arrayContains(mp.options, "noplot")) {
 				BufferedImage result = new BufferedImage(500,500,BufferedImage.TYPE_INT_RGB);
 				Drawer.plot(mp, c, result);
 				File f = new File("test.png");
 				ImageIO.write(result,"png",f);
-			} else
-				System.out.println(c.toString());
+			} else {
+				sentMessage="Function: f(x) = " + fp.toString() +
+						"\n\tFirst Point: " + mp.start + 
+						"\n\tEnd Point: " + mp.end + 
+						"\n\tStep: " + mp.step;
+				sentMessage+="\n"+c.toString();
+				System.out.println(sentMessage);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
