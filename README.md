@@ -3,10 +3,14 @@
 Plotatoe is a Telegram Math Bot. You give the bot a function with some parameters and then it creates an image with the plot of that function for you. Everything except the Telegram API is done from scratch.
 
 ## How to use the bot
-Usage is simple, just follow this pattern:
-/plot f(x) start end step \[options\]
 
-f(x) must be a function, with x as variable (i.e. 3\*x). If you are going to put spaces you put the function in parenthesis: (3 \* x). The bot supports sum(+), substract(-), multiplication(\*), division(/) and power function(^). It respects the natural order of operations but you can include parenthesis.
+Usage is simple, just follow this pattern:
+
+```
+/plot f(x) start end step \[options\]
+```
+
+f(x) must be a function, with x as variable (i.e. 3\*x). You can't put spaces in the function. The bot supports sum(+), substract(-), multiplication(\*), division(/) and power function(^). It respects the natural order of operations but you can include parenthesis.
 
 start can be any double.
 
