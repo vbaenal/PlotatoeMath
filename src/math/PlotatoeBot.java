@@ -19,14 +19,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class PlotatoeBot extends AbilityBot {
-
-	//Your bot token
-	public static final String BOT_TOKEN = "";
-	//Your bot username
-	public static final String BOT_USERNAME = "";
-	//Your user id
-	public static final int CREATOR_ID = 0;
-
 	public static void main(String[] args) {
 		
 		ApiContextInitializer.init();
@@ -40,12 +32,12 @@ public class PlotatoeBot extends AbilityBot {
 	}
 
 	public PlotatoeBot() {
-		super(BOT_TOKEN, BOT_USERNAME);
+		super(BotOptions.BOT_TOKEN, BotOptions.BOT_USERNAME);
 	}
 
 	@Override
 	public int creatorId() {
-		return CREATOR_ID;
+		return BotOptions.CREATOR_ID;
 	}
 
 	public Ability sendPlot() {
