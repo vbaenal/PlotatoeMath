@@ -80,7 +80,14 @@ public class PlotatoeBot extends AbilityBot {
 				execute(sender);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			SendMessage sm = new SendMessage();
+			sm.setChatId(ctx.chatId());
+			sm.setText("Something went wrong, try with something different");
+			try {
+				execute(sm);
+			} catch (TelegramApiException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

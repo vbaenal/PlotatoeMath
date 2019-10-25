@@ -11,6 +11,8 @@ public class FunctionParser {
 
 	private String function;
 	
+	// (3x+1)*1 => *(3x+1,1) => *(+(3x,1),1)
+	
 	// Obtains the function and decomposes it to a tree form
 	public FunctionParser(String f) {
 		// Locate parenthesis
