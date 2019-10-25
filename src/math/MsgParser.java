@@ -40,7 +40,7 @@ public class MsgParser {
 		//Some constraints
 		//There should be at least 1 step
 		if(end-start<step) throw new Exception();
-		//Step can't be 0 or lower
-		if(step<=0d) throw new Exception();
+		//Step can't be negative or very low number
+		if(step<0.00001d) throw new Exception();
 	}
 }
