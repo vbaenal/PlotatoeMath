@@ -15,6 +15,12 @@ public class FunctionParser {
 	
 	// Obtains the function and decomposes it to a tree form
 	public FunctionParser(String f) {
+		f=f.toLowerCase();
+		f=f.replace("e", Constants.E);
+		f=f.replace("pi", Constants.PI);
+		f=f.replace("tau", Constants.TAU);
+		f=f.replace("phi", Constants.PHI);
+		
 		// Locate parenthesis
 		List<List<Integer>> parData = Common.locateParenthesis(f);
 		this.function=f;
