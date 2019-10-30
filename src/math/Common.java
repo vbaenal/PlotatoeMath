@@ -10,7 +10,8 @@ import java.util.List;
 
 public class Common {
 
-	public final static String[] TOKENS= {"+","-","*","/","^"};
+	public final static String[] SINGLE_TOKENS = {"-","log","sin","tan"}; 
+	public final static String[] BINARY_TOKENS = {"+","*","/","^"};
 	
 	public static List<List<Integer>> locateParenthesis(String arg) {
 		String f=new String(arg);
@@ -42,11 +43,17 @@ public class Common {
 		return res;
 	}
 	
-	public static boolean containsToken(String arg) {
-		for(int i=0;i<TOKENS.length;i++) {
-			if(arg.contains(TOKENS[i]))
+	public static boolean containsSingleToken(String arg) {
+		for(int i=0;i<SINGLE_TOKENS.length;i++)
+			if(arg.contains(SINGLE_TOKENS[i]))
 				return true;
-		}
+		return false;
+	}	
+	
+	public static boolean containsBinaryToken(String arg) {
+		for(int i=0;i<BINARY_TOKENS.length;i++)
+			if(arg.contains(BINARY_TOKENS[i]))
+				return true;
 		return false;
 	}
 	
