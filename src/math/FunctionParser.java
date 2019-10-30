@@ -11,8 +11,6 @@ public class FunctionParser {
 
 	private String function;
 	
-	// (3x+1)*1 => *(3x+1,1) => *(+(3x,1),1)
-	
 	// Obtains the function and decomposes it to a tree form
 	public FunctionParser(String f) {
 		f=f.toLowerCase();
@@ -34,33 +32,32 @@ public class FunctionParser {
 			}
 		}
 		
-		boolean hasToken=false;
+		boolean hasBinaryToken=false;
 		int i=0;
-		for(;i<Common.TOKENS.length;i++)
-			if(function.contains(Common.TOKENS[i])) {
-				hasToken=true;
+		for(;i<Common.BINARY_TOKENS.length;i++)
+			if(function.contains(Common.BINARY_TOKENS[i])) {
+				hasBinaryToken=true;
 				break;
 			}
 		
-		if(hasToken) {
-			String[] parts = function.split("\\"+Common.TOKENS[i],2);
+		if(hasBinaryToken) {
+			String[] parts = function.split("\\"+Common.BINARY_TOKENS[i],2);
 			for(int j=0;j<parenthesis.size();j++) {
-				if(Common.containsToken(parts[0]))
+				if(Common.containsBinaryToken(parts[0]))
 					parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
 				else
 					parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-				if(Common.containsToken(parts[1]))
+				if(Common.containsBinaryToken(parts[1]))
 					parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
 				else
 					parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
 			}
-			this.function = Common.TOKENS[i] + "(";
+			this.function = Common.BINARY_TOKENS[i] + "(";
 			this.function+=new FunctionParser(parts[0]).toString() + "," + new FunctionParser(parts[1]).toString()+")";
 		}
 	}
 	
 	public String toString() {
 		return function;
-	}
-	
+	}	
 }

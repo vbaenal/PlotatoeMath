@@ -40,11 +40,11 @@ public class Compute {
 		}
 		String[] parts = interior.split("\\,",2);
 		for(int j=0;j<parenthesis.size();j++) {
-			if(Common.containsToken(parts[0]))
+			if(Common.containsBinaryToken(parts[0]))
 				parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
 			else
 				parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-			if(Common.containsToken(parts[1]))
+			if(Common.containsBinaryToken(parts[1]))
 				parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
 			else
 				parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
@@ -91,11 +91,11 @@ public class Compute {
 			}
 			String[] parts = interior.split("\\,",2);
 			for(int j=0;j<parenthesis.size();j++) {
-				if(Common.containsToken(parts[0]))
+				if(Common.containsBinaryToken(parts[0]))
 					parts[0]=parts[0].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
 				else
 					parts[0]=parts[0].replace("PARENTHESIS"+j, parenthesis.get(j));
-				if(Common.containsToken(parts[1]))
+				if(Common.containsBinaryToken(parts[1]))
 					parts[1]=parts[1].replace("PARENTHESIS"+j, "(" + parenthesis.get(j) + ")");
 				else
 					parts[1]=parts[1].replace("PARENTHESIS"+j, parenthesis.get(j));
