@@ -13,9 +13,8 @@ public class Test {
 
 	public static void main(String[] args) {
 		//TODO If you do (a+b)*(a-b) (or any other operations with a and b in this order) the program doesn't work
-		String[] msg= {"x^4-3*x^3+2*x^2+x", "-1", "2.5", "0.25"};
+		String[] msg= {"1/x", "-1", "2", "0.3"};
 		try {
-			System.out.println(Common.containsToken("2+2"));
 			String sentMessage;
 			MsgParser mp = new MsgParser(msg);
 			System.out.println("MsgParser Done");

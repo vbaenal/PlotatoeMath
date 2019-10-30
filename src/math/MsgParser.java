@@ -33,6 +33,7 @@ public class MsgParser {
 		
 		//0 is function, 1 start, 2 end, 3 step
 		function = functionData[0].toLowerCase().replace(" ", "")+"*1";
+		function = function.replace("-", "+-");
 		start=Double.parseDouble(functionData[1]);
 		end=Double.parseDouble(functionData[2]);
 		step=Double.parseDouble(functionData[3]);

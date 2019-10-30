@@ -15,16 +15,21 @@ public class Drawer {
 		start = mp.start;
 		end = mp.end;
 
-		int xOrigin = 50;
-		int yOrigin = 450;
+		int xOrigin = 0;
+		int yOrigin = 480;
+		int w = 500;
+		int h = 500;
 		Graphics2D g = bi.createGraphics();
-		g.setColor(Color.WHITE);
+		g.setColor(new Color(0xF0F0F0));
+		g.fillRect(0, 0, w, h);
+		g.setColor(Color.LIGHT_GRAY);
 
-		g.drawLine(xOrigin,0,xOrigin,500);
-		g.drawLine(0, yOrigin, 500, yOrigin);
+		g.drawLine(xOrigin,0,xOrigin,h);
+		g.drawLine(0, yOrigin, w, yOrigin);
 
+		g.setColor(Color.BLACK);
 		g.drawString(String.valueOf(start), xOrigin + 5, yOrigin + 15);
-		g.drawString(String.valueOf(end), 480, yOrigin + 15);
+		g.drawString(String.valueOf(end), w-20, yOrigin + 15);
 
 		Double[] keys = new Double[c.results.size()];
 		Double[] values = new Double[c.results.size()];
@@ -43,28 +48,37 @@ public class Drawer {
 
 		for (int i = 0; i < keys.length; i++) {
 			int height = (int) (435 - 435 * (values[i] - yMin) / (yMax - yMin));
+			g.setColor(Color.BLACK);
 			if (i == keys.length - 1) {
 				if (!Common.arrayContains(mp.options, "nolabel"))
-					g.drawString(String.valueOf(values[i]), 480, height + 10);
+					g.drawString(String.valueOf(values[i]), w-20, height + 10);
 			} else {
 				double offset = ((keys[i] - start) / (end - keys[i]));
-				int xPos = (int) ((xOrigin + 500 * offset) / (1 + offset));
+				int xPos = (int) ((xOrigin + w * offset) / (1 + offset));
 				if (!Common.arrayContains(mp.options, "nolabel")) {
 					g.drawString(String.valueOf(new DecimalFormat("#.##").format(values[i])), xPos + 5, height + 10);
 					g.drawString(String.valueOf(new DecimalFormat("#.##").format(keys[i])), xPos + 5, yOrigin + 15);
 				}
-
+				g.setColor(Color.BLUE);
 				g.drawRect(xPos, height, 2, 2);
 
 				int nextHeight = (int) (435 - 435 * (values[i + 1] - yMin) / (yMax - yMin));
-				int nextXPos = 500;
+				int nextXPos = w;
 				if (i + 1 != keys.length - 1) {
 					double nextOffset = ((keys[i + 1] - start) / (end - keys[i + 1]));
-					nextXPos = (int) ((xOrigin + 500 * nextOffset) / (1 + nextOffset));
+					nextXPos = (int) ((xOrigin + w * nextOffset) / (1 + nextOffset));
 				}
 				g.drawLine(xPos, height, nextXPos, nextHeight);
 			}
 		}
-	}
+		
 
+		int yZero = (int) (435 - 435*(-yMin) / (yMax - yMin));
+		double offset = -start/end;
+		int xZero = (int) ((xOrigin + w * offset) / (1 + offset));
+		
+		g.setColor(Color.GRAY);
+		g.drawLine(xZero, 0, xZero, h);
+		g.drawLine(0, yZero, w, yZero);
+	}
 }
