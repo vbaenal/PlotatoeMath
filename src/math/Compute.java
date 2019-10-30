@@ -111,8 +111,6 @@ public class Compute {
 		switch(opType) {
 		case "+":
 			return dArg1+dArg2;
-		case "-":
-			return dArg1-dArg2;
 		case "*":
 			return dArg1*dArg2;
 		case "/":

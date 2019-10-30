@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Common {
 
-	public final static String[] SINGLE_TOKENS = {"-","log","sin","tan"}; 
+	public final static String[] SINGLE_TOKENS = {"log","sin","cos","tan"}; 
 	public final static String[] BINARY_TOKENS = {"+","*","/","^"};
 	
 	public static List<List<Integer>> locateParenthesis(String arg) {

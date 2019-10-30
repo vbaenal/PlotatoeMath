@@ -1,6 +1,6 @@
 # Plotatoe Bot
 
-Plotatoe is a Telegram Math Bot. You give the bot a function with some parameters and then it creates an image with the plot of that function for you. Everything except the Telegram API is done from scratch.
+Plotatoe is a Telegram Math Bot. You give the bot a function with some parameters and then it creates an image with the plot of that function for you. Everything except the Telegram API is done from scratch. You can test it here: https://telegram.me/plotatoemathsbot
 
 ## How to use the bot
 
