@@ -12,7 +12,6 @@ public class MsgParser {
 	public double start, end, step;
 	public String function;
 	public String[] options;
-	
 	public MsgParser(String[] msg) throws Exception {
 		if(msg.length<4) throw new Exception();
 		
@@ -33,7 +32,7 @@ public class MsgParser {
 		
 		//0 is function, 1 start, 2 end, 3 step
 		function = functionData[0].toLowerCase().replace(" ", "")+"*1";
-		function = function.replace("-", "+-");
+		function = function.replace("-", "+-1*");
 		start=Double.parseDouble(functionData[1]);
 		end=Double.parseDouble(functionData[2]);
 		step=Double.parseDouble(functionData[3]);
