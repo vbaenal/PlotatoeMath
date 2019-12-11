@@ -62,7 +62,7 @@ public class Drawer {
 				g.setColor(Color.BLUE);
 				g.drawRect(xPos, height, 2, 2);
 
-				int nextHeight = (int) (435 - 435 * (values[i + 1] - yMin) / (yMax - yMin));
+				int nextHeight = (int) (yOrigin - yOrigin * (values[i + 1] - yMin) / (yMax - yMin));
 				int nextXPos = w;
 				if (i + 1 != keys.length - 1) {
 					double nextOffset = ((keys[i + 1] - start) / (end - keys[i + 1]));
@@ -73,7 +73,7 @@ public class Drawer {
 		}
 		
 
-		int yZero = (int) (435 - 435*(-yMin) / (yMax - yMin));
+		int yZero = (int) (yOrigin - yOrigin*(-yMin) / (yMax - yMin));
 		double offset = -start/end;
 		int xZero = (int) ((xOrigin + w * offset) / (1 + offset));
 		
