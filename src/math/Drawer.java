@@ -47,7 +47,7 @@ public class Drawer {
 		double yMax = Collections.max(aux);
 
 		for (int i = 0; i < keys.length; i++) {
-			int height = (int) (435 - 435 * (values[i] - yMin) / (yMax - yMin));
+			int height = (int) (yOrigin - yOrigin * (values[i] - yMin) / (yMax - yMin));
 			g.setColor(Color.BLACK);
 			if (i == keys.length - 1) {
 				if (!Common.arrayContains(mp.options, "nolabel"))
