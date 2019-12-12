@@ -13,7 +13,7 @@ public class Test {
 
 	public static void main(String[] args) {
 		//TODO If you do (a+b)*(a-b) (or any other operations with a and b in this order) the program doesn't work
-		String[] msg= {"1/x", "-1", "2", "0.3"};
+		String[] msg= {"1/x", "-2", "2", "0.3"};
 		try {
 			String sentMessage;
 			MsgParser mp = new MsgParser(msg);
