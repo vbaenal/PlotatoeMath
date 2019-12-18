@@ -1,4 +1,4 @@
-package math;
+package com.plotatoe.math;
 
 public class Constants {
 	public static final String E = "2.71828";
