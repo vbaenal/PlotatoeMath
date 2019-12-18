@@ -1,4 +1,4 @@
-package math;
+package com.plotatoe.math;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -15,14 +15,20 @@ public class Compute {
 	public Map<Double, Double> results = new HashMap<Double,Double>();
 	public String[] fData = new String[3];
 	
+	public double start, end;
+	public String[] options;
+
 	private FunctionParser fp;
 	private double[] varData = new double[3];
 	
 	public Compute(FunctionParser fp, MsgParser mp) {
 		this.fp = fp;
 		this.varData[0]=mp.start;
+		this.start=mp.start;
 		this.varData[1]=mp.end;
+		this.end=mp.end;
 		this.varData[2]=mp.step;
+		this.options=mp.options;
 	}
 	
 	public void compute() throws Exception {

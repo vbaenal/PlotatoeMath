@@ -1,4 +1,4 @@
-package math;
+package com.plotatoe.math;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -10,10 +10,10 @@ import java.util.List;
 
 public class Drawer {
 
-	public static void plot(MsgParser mp, Compute c, BufferedImage bi) {
+	public static void plot(Compute c, BufferedImage bi) {
 		double start, end;
-		start = mp.start;
-		end = mp.end;
+		start = c.start;
+		end = c.end;
 
 		int xOrigin = 0;
 		int yOrigin = 480;
@@ -50,12 +50,12 @@ public class Drawer {
 			int height = (int) (yOrigin - yOrigin * (values[i] - yMin) / (yMax - yMin));
 			g.setColor(Color.BLACK);
 			if (i == keys.length - 1) {
-				if (!Common.arrayContains(mp.options, "nolabel"))
+				if (!Common.arrayContains(c.options, "nolabel"))
 					g.drawString(String.valueOf(values[i]), w-20, height + 10);
 			} else {
 				double offset = ((keys[i] - start) / (end - keys[i]));
 				int xPos = (int) ((xOrigin + w * offset) / (1 + offset));
-				if (!Common.arrayContains(mp.options, "nolabel")) {
+				if (!Common.arrayContains(c.options, "nolabel")) {
 					g.drawString(String.valueOf(new DecimalFormat("#.##").format(values[i])), xPos + 5, height + 10);
 					g.drawString(String.valueOf(new DecimalFormat("#.##").format(keys[i])), xPos + 5, yOrigin + 15);
 				}
