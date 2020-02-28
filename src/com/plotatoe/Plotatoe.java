@@ -21,13 +21,20 @@ public class Plotatoe {
 		return new Compute(fp,mp);
 	}
 
-	public static BufferedImage getPlotAsBufferedImage(String[] msg) {
+	public static BufferedImage getPlotAsBufferedImage(String[] msg, int type) {
 		BufferedImage result = null;
 		try {
 			Compute c = results(msg);
 			c.compute();
 			result = new BufferedImage(500,500,BufferedImage.TYPE_INT_RGB);
-			Drawer.plot(c, result);
+			
+			switch(type) {
+			case 0:
+				Drawer.plot(c, result);				
+				break;
+			case 1: Drawer.projective(c, result);
+				break;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

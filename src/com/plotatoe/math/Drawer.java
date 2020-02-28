@@ -2,6 +2,7 @@ package com.plotatoe.math;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -80,5 +81,61 @@ public class Drawer {
 		g.setColor(Color.GRAY);
 		g.drawLine(xZero, 0, xZero, h);
 		g.drawLine(0, yZero, w, yZero);
+	}
+
+	public static void projective(Compute c, BufferedImage result) {
+		int pointsize = 3;
+		int gridlines = 150;
+		
+		int width = 500, height = 500;
+		int horizon = 50, zero = 450;
+		int scale = zero-horizon;
+		
+		Graphics2D g = result.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setColor(Color.black);
+		g.fillRect(0, 0, width, height);
+		g.setColor(Color.white);
+		g.drawLine(0, horizon, width, horizon);
+		
+		//vertical lines
+		for(int i = 0; i < gridlines; i++) {
+			g.drawLine(width/2+i*scale, zero, width/2, horizon);
+			g.drawLine(width/2-i*scale, zero, width/2, horizon);
+		}
+		g.drawLine(width/2, horizon, width/2, zero);
+		
+		//horizontal lines
+		for(double i = 1; i < gridlines; i++) {
+			g.drawLine(0, (int)(1/i*scale)+horizon, width, (int)(1/i*scale)+horizon);
+		}
+		
+		Double[] keys = new Double[c.results.size()];
+		Double[] values = new Double[c.results.size()];
+		int j = 0;
+		for (Double key : c.results.keySet()) {
+			keys[j] = key;
+			j++;
+		}
+		Arrays.sort(keys);
+		for (int i = 0; i < keys.length; i++)
+			values[i] = c.results.get(keys[i]);
+		
+		g.setColor(new Color(0xff6c27));
+		for(int i = 0; i < keys.length; i++) {
+			double x1 = keys[i];
+			double z1 = values[i];
+			if(z1 < -1) continue;
+			//points
+			g.fillOval((int)(x1/(z1+1)*scale+width/2-pointsize/2.0), (int)(1/(z1+1)*scale+horizon-pointsize/2.0), pointsize, pointsize);				
+			
+			//line segments
+			if(i < keys.length-1) {
+				double x2 = keys[i+1];
+				double z2 = values[i+1];
+				if(z2 < -1) continue;
+				g.drawLine((int)(x1/(z1+1)*scale+width/2), (int)(1/(z1+1)*scale+horizon),(int)(x2/(z2+1)*scale+width/2), (int)(1/(z2+1)*scale+horizon));				
+			}
+		}
 	}
 }
