@@ -11,9 +11,9 @@ import javax.imageio.ImageIO;
 public class Test {
 
 	public static void main(final String[] args) {
-		final String[] msg = { "(x-2)*(x+2)", "-2", "2", "0.3" };
+    final String[] msg = { "(x-2)*(x+2)", "-2", "2", "0.3" }; 
 		try {
-			BufferedImage result = Plotatoe.getPlotAsBufferedImage(msg);
+			BufferedImage result = Plotatoe.getPlotAsBufferedImage(msg,1);
 			final File f = new File("test.png");
 			ImageIO.write(result, "png", f);
 		} catch (final Exception e) {

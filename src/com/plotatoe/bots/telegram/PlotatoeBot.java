@@ -47,7 +47,12 @@ public class PlotatoeBot extends AbilityBot {
 
 	public Ability plot() {
 		return Ability.builder().name("plot").info("plots the function").input(0).locality(Locality.ALL)
-				.privacy(Privacy.PUBLIC).action(ctx -> plotFunction(ctx)).build();
+				.privacy(Privacy.PUBLIC).action(ctx -> plotFunction(ctx, 0)).build();
+	}
+	
+	public Ability projective() {
+		return Ability.builder().name("projective").info("plots the function").input(0).locality(Locality.ALL)
+				.privacy(Privacy.PUBLIC).action(ctx -> plotFunction(ctx, 1)).build();
 	}
 	
 	public Ability results() {
@@ -55,10 +60,10 @@ public class PlotatoeBot extends AbilityBot {
 				.locality(Locality.ALL).privacy(Privacy.PUBLIC).action(ctx -> resultsFunction(ctx)).build();
 	}
 
-	public void plotFunction(MessageContext ctx) {
+	public void plotFunction(MessageContext ctx, int type) {
 		String[] command = ctx.arguments();
 		try {
-			BufferedImage result = Plotatoe.getPlotAsBufferedImage(command);
+			BufferedImage result = Plotatoe.getPlotAsBufferedImage(command, type);
 
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			ImageIO.write(result, "png", os);
