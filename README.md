@@ -1,31 +1,38 @@
-# Plotatoe Bot
+# Plotatoe Maths
 
-Plotatoe is a Telegram Math Bot. You give the bot a function with some parameters and then it creates an image with the plot of that function for you. Everything except the Telegram API is done from scratch. You can test it here: https://telegram.me/plotatoemathsbot
+Plotatoe is a Java library for function plotting. You give the bot a function with some parameters and then it creates an image with the plot of that function for you. Everything is made from scratch.
 
-## How to use the bot
+## Telegram Bot
 
-Usage is simple, just follow this pattern:
+You can test it here: https://telegram.me/plotatoemathsbot. It has three commands right now:
 
 ```
-/plot f(x) start end step [options]
+/plot f(x) start end step [options] // Normal plot
+
+/results f(x) start end step        // Results in text
+
+/projective f(x) start end step     // Plot in the projective plane
 ```
 
-f(x) must be a function, with x as variable (i.e. 3\*x). You can't put spaces in the function. The bot supports sum(+), substract(-), multiplication(\*), division(/) and power function(^). It respects the natural order of operations but you can include parenthesis.
 
-start can be any double.
+`f(x)` -> must be a function, with x as variable (i.e. `3*x`). You can't put spaces in the function. The bot supports sum(+), substract(-), multiplication(\*), division(/) and power function(^). It respects the natural order of operations but you can include parenthesis.
 
-end can be any number greater than end.
+`start` -> can be any double.
 
-step can be any number greater than zero and greater than end-start.
+`end` -> can be any number greater than start.
 
-options are optional arguments you can add with a #.
+`step` -> can be any number greater than 0 and greater than `end-start`.
+
+`options` -> are optional arguments you can add with a #.
 
 ## Options
 
-#noplot -> it gives you the results without the image
+`#nolabel` -> represents the function but without numbers (only start and end)
 
-#nolabel -> represents the function but without numbers (only start and end)
+## Libraries used
 
-## TelegramBots Library
+Thanks to rubenlagus for the TelegramBots library - [TelegramBots](https://github.com/rubenlagus/TelegramBots)
 
-Thanks to rubenlagus for the TelegramBots library - [TelegramBots](https://github.com/rubenlagus/TelegramBots) 
+## Contributors
+
+Thanks to MrCamoga for implementing the projective plane - [MrCamoga](https://github.com/MrCamoga)
