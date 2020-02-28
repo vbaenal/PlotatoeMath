@@ -1,4 +1,4 @@
-package bots.telegram;
+package com.plotatoe.bots.telegram;
 
 public class BotOptions {
 	// Your bot token
