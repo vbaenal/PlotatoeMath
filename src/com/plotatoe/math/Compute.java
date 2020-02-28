@@ -15,7 +15,7 @@ public class Compute {
 	public Map<Double, Double> results = new HashMap<Double,Double>();
 	public String[] fData = new String[3];
 	
-	public double start, end;
+	public double start, end, step;
 	public String[] options;
 
 	private FunctionParser fp;
@@ -28,6 +28,7 @@ public class Compute {
 		this.varData[1]=mp.end;
 		this.end=mp.end;
 		this.varData[2]=mp.step;
+		this.step=mp.step;
 		this.options=mp.options;
 	}
 	
@@ -74,7 +75,10 @@ public class Compute {
 	}
 	
 	public String toString() {
-		String res="";
+		String res="Function: f(x) = " + fp.toString() +
+				"\n\tFirst Point: " + start + 
+				"\n\tEnd Point: " + end + 
+				"\n\tStep: " + step;
 		for(Double da : results.keySet()) {
 			res+="[";
 			res+=new DecimalFormat("#.##").format(da);

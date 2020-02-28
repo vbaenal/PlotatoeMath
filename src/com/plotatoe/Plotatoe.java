@@ -18,14 +18,19 @@ public class Plotatoe {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new Compute(fp,mp);
+		Compute res = new Compute(fp, mp);
+		try {
+			res.compute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 	public static BufferedImage getPlotAsBufferedImage(String[] msg, int type) {
 		BufferedImage result = null;
 		try {
 			Compute c = results(msg);
-			c.compute();
 			result = new BufferedImage(500,500,BufferedImage.TYPE_INT_RGB);
 			
 			switch(type) {
@@ -39,5 +44,13 @@ public class Plotatoe {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	public static BufferedImage getProjectivePlot(String[] msg) {
+		return getPlotAsBufferedImage(msg, 1);
+	}
+
+	public static BufferedImage getPlot(String[] msg) {
+		return getPlotAsBufferedImage(msg, 0);
 	}
 }

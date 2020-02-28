@@ -19,9 +19,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import com.plotatoe.Plotatoe;
-import com.plotatoe.math.Compute;
-import com.plotatoe.math.FunctionParser;
-import com.plotatoe.math.MsgParser;
 
 public class PlotatoeBot extends AbilityBot {
 	public static void main(String[] args) {
@@ -83,22 +80,12 @@ public class PlotatoeBot extends AbilityBot {
 	public void resultsFunction(MessageContext ctx) {
 		String[] command = ctx.arguments();
 		try {
-			MsgParser mp = new MsgParser(command);
-			FunctionParser fp = new FunctionParser(mp.function);
-			Compute c = new Compute(fp, mp);
-			c.compute();
-		
-			String sentMessage="Function: f(x) = " + fp.toString() +
-				"\n\tFirst Point: " + mp.start + 
-				"\n\tEnd Point: " + mp.end + 
-				"\n\tStep: " + mp.step;
-			sentMessage+="\n"+c.toString();
-		
+			String computed = Plotatoe.results(command).toString();		
 			SendMessage sender = new SendMessage();
 			sender.setChatId(ctx.chatId());
-			sender.setText(sentMessage);
+			sender.setText(computed);
 			execute(sender);
-		} catch (Exception e) {
+		} catch (TelegramApiException e) {
 			errorHandler(ctx);
 		}
 	}
