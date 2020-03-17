@@ -1,7 +1,7 @@
 # Introduction
 
 This document holds all the API details of the `PlotatoeMath` bot.
-For quick start, you may refer to [Examples] [code_examples]
+For quick start, you may refer to [Examples] (./src/com/plotatoe/Test.java)
 
 # Usage
 
