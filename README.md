@@ -35,5 +35,5 @@ Thanks to rubenlagus for the TelegramBots library - [TelegramBots](https://githu
 
 ## Contributors
 
-Thanks to MrCamoga for implementing the projective plane - [MrCamoga](https://github.com/MrCamoga)
-Thanks to UnversedBlood for writing the documentation - [UnversedBlood](https://github.com/UnversedBlood)
+- Thanks to MrCamoga for implementing the projective plane - [MrCamoga](https://github.com/MrCamoga)
+- Thanks to UnversedBlood for writing the documentation - [UnversedBlood](https://github.com/UnversedBlood)
